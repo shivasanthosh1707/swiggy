@@ -9,7 +9,6 @@ import Shimmer from "./shimmer";
 import LocationData from "./locationData";
 import TopRestaurants from "./topRestruantsSection";
 import Loader from "./loader";
-import LocationError from "./locationnotfound";
 import Footer from "./footer";
 import { useSelector } from "react-redux";
 function Home (){
@@ -24,15 +23,13 @@ const navigate = useNavigate()
 const geo =useSelector((state)=>{
   return state.geo
  })
-// apis
-//top rest
+
 
 
 useEffect(()=>{
   axios.get(`https://www.swiggy.com/dapi/restaurants/list/v5?lat=${geo[0].lat}&lng=${geo[0].lng}&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING`)
 .then((res)=>{
   
-  // console.log(res.data.data.cards[1].card.card.gridElements.infoWithStyle.restaurants)
  if(res?.data?.data?.cards[1]?.card?.card?.gridElements){
   setTopRestaurants(res?.data?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants)
  setForYou(res?.data?.data?.cards[0]?.card?.card?.gridElements?.infoWithStyle?.info)
@@ -45,7 +42,6 @@ useEffect(()=>{
 useEffect(()=>{
   axios.get(`https://www.swiggy.com/dapi/misc/place-autocomplete?input=${suggetions}&types=`)
 .then((res)=>{
-// console.log(res.data.data)
 if(res.data.data){
 setLocations(res?.data?.data)}
 })
@@ -54,13 +50,11 @@ setLocations(res?.data?.data)}
 useEffect(()=>{
 axios.get(`https://www.swiggy.com/dapi/restaurants/list/v5?lat=${geo[0].lat}&lng=${geo[0].lng}&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING`)
 .then((res)=>{
-  // console.log(res)
 })
 },[])
 
   return(
    <> 
-  {/* <div style={{display:"none"}}><Header yourLocation={yourLocation}/></div> */}
 <div className="container-fluid top-restaurants">
 
   {forYou.length <= 0 ? <Loader/>:""}
@@ -88,8 +82,6 @@ axios.get(`https://www.swiggy.com/dapi/restaurants/list/v5?lat=${geo[0].lat}&lng
      setLocations ={setLocations}
      topRestaurants={ topRestaurants }
      setTopRestaurants={setTopRestaurants}
-    //  setGeoLocation={setGeoLocation}
-    //  geoLocation={geoLocation}
      yourLocation= {yourLocation}
      setYourLocation ={setYourLocation}
       />
@@ -113,7 +105,7 @@ axios.get(`https://www.swiggy.com/dapi/restaurants/list/v5?lat=${geo[0].lat}&lng
     // console.log(item)
     return  <div className="ss" key={i}
     onClick={()=>{
-      navigate(`/Open/${item.action?.text}/${item.entityId.slice(36,41)    }`)
+      navigate(`/Open/${item.action?.text}/${item?.entityId?.slice(36,41)    }`)
     }}> 
     <img className="ss-img" src={`https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/${item?.imageId}` }alt="img" /> 
     </div>
@@ -137,7 +129,7 @@ axios.get(`https://www.swiggy.com/dapi/restaurants/list/v5?lat=${geo[0].lat}&lng
     <div className="card-body1">
     <h6>{item.info.name}</h6>
     <p style={{color : "#333435"}}><span style={{marginRight:"5px", color: `${item?.info?.avgRatingString >= 3.5 ?"green":"orange" }`}}><i className="fa-solid fa-star"></i></span><span style={{marginRight:"5px"}}>{item?.info?.avgRatingString}</span> <span style={{marginRight:"05px"}}><i className="fa-solid fa-motorcycle"></i></span><span>{item?.info?.sla?.slaString}</span></p>
-    <p>{item?.info?.cuisines.slice(0,3).join()}</p>
+    <p>{item?.info?.cuisines?.slice(0,3).join()}</p>
     <b style={{margin : "0px",padding:"0px"}}>{item?.info?.locality}</b>
     </div>
   </div>
